@@ -1,0 +1,335 @@
+# ...............................................
+# ...............................................
+# Process layers from species distribution models
+# ...............................................
+# ...............................................
+# Packages
+library("data.table")
+library("ggplot2")
+library("grDevices")
+library("patchwork")
+library("raster")
+library("sp")
+library("sf")
+
+# ...............................................
+# ...............................................
+# Files and parameters
+path <- "processing/enm"
+
+# file with spp acronyms and uses
+spnames <- fread("data/species_names.csv")
+
+# read the passport data
+pass <- fread("data/passport_data.csv")
+
+# shape with adm units
+adm <- st_read("data/gadm/europe/europe_adm0.shp")
+adm <- st_as_sf(adm)
+adm <- adm[-c(2:3)]
+adm
+
+# ...............................................
+# ...............................................
+# get species names from processed models
+sp <- list.dirs(path)[-1]
+sp <- strsplit(sp, "/")
+sp <- suppressWarnings(do.call("rbind", sp)[,3])
+sp <- sort(unique(sp))
+n  <- max(seq_along(sp))
+
+# filter spnames and passport data
+keep <- spnames$acronym %in% sp
+
+spnames <- spnames[keep, ]
+
+keep <- pass$acronym %in% sp
+
+pass <- pass[keep, ]
+
+table(spnames$use)
+
+# each species layer has its own bbox based on the max hull for the 
+# presence points used take a raster that includes all the regional
+# area used here to create a new layer with the same bbox for all species
+# use one of the bioclim layers and set all values as zero
+f <- list.files("data/bioclim", pattern = ".tif", full.names = TRUE)[[2]]
+eur <- raster(f)
+eur[eur[] != 0] <- 0
+
+myext <- extent(eur)
+myext[1] <- -10.5
+myext[2] <- 48
+
+eur <- crop(eur, myext)
+
+adm <- st_crop(adm, myext)
+
+myproj <- as.character(crs(eur))
+
+plot(adm)
+
+# ...............................................
+# ...............................................
+# Run over current presence ####
+# list with presence layers
+sp_p <- list()
+
+pb <- txtProgressBar(min = 1, max = n, initial = 0)
+
+for(i in seq_along(sp)) {
+  
+  # layer with presence
+  p_i <- paste0(path, "/", 
+                sp[i], 
+                "/ensembles/presence/")
+  
+  p_i <- stack(list.files(p_i,
+                          pattern = "current.grd",
+                          full.names = TRUE))
+
+  # presence is defined as 1,
+  # set all values different tha 1 as NA
+  p_i[p_i[] != 1 ] <- NA
+
+  crs(p_i) <- myproj
+
+  p_i <- crop(p_i, myext)
+  
+  # reconstruct layer using the regional layer as baseline
+  p_i <- mosaic(eur, p_i, fun = sum)
+  # set the regional layer as a mask
+  p_i <- mask(p_i, eur)
+
+  sp_p[[sp[i]]] <- p_i
+
+  setTxtProgressBar(pb, i)
+  
+}
+
+
+# ...............................................
+# ...............................................
+# Run over current distribution ####
+# list with distribution layers
+sp_d <- list()
+
+pb <- txtProgressBar(min = 1, max = n, initial = 0)
+
+for(i in seq_along(sp)) {
+  
+  d_i <- paste0(path, "/",
+                sp[i],
+                "/ensembles/suitability/")
+  
+  d_i <- stack(list.files(d_i,
+                          pattern = "current.grd",
+                          full.names = TRUE))
+  
+  crs(d_i) <- myproj
+  
+  d_i <- crop(d_i, myext)
+  
+  # reconstruct layer using the regional layer as baseline
+  d_i <- mosaic(eur, d_i, fun = sum)
+  # set the regional layer as a mask
+  d_i <- mask(d_i, eur)
+  
+  # get the presence layers and set it as a mask
+  # for the distribution threshold
+  p <- sp_p[[i]]
+  p[p[] != 1] <- NA
+  
+  d_i <- mask(d_i, p)
+  
+  sp_d[[sp[i]]]  <- d_i
+  
+  setTxtProgressBar(pb, i)
+  
+}
+
+# ...............................................
+# ...............................................
+# Create maps ###
+
+#define colours for map of gradient of distribution
+colpall <- colorRampPalette(c("#FFFFFF", "#FFFF80", "#38E009","#1A93AB", "#0C1078"))
+
+# order spp names by uses
+spnames <- spnames[order(spnames$use), ]
+
+# apply the same order across the list of maps
+sp_d <- sp_d[spnames$acronym]
+
+rm(sp)
+
+# remove points outside bbox 
+keep <- pass$lon > myext[1]
+
+keep <- pass$lon < myext[2] & keep
+
+pass <- pass[keep, ]
+
+# Plot individual maps
+output <- "output/individual_maps/"
+dir.create(output, recursive = TRUE, showWarnings = FALSE)
+
+for(i in seq_along(sp_d)) {
+  
+  print(spnames[i,"taxa"])
+  
+  r <- sp_d[[i]]
+  r <- as.data.frame(r, xy = TRUE)
+  r <- r[!is.na(r[, "layer"]), ]
+  r[, "layer"] <- round(r[, "layer"] / 1000, 2)
+  
+  gen <- pass[pass$acronym == spnames[[i,"acronym"]], ]
+  gen <- gen[gen$source == "genesys"]
+  gen <- gen[, .(lon, lat)]
+  
+  if(nrow(gen) > 5){
+    x <- extract(sp_d[[i]], as.data.frame(gen))
+    gen <- gen[!is.na(x), ]
+  }
+  
+  acronym <- names(sp_d[i])
+  acronym <- which(spnames$acronym %in% acronym)
+  species <- paste(spnames[acronym,.(genus, species)], collapse = " ")
+  
+  p <- ggplot() +
+    geom_tile(r, mapping = aes(x = x, y = y, fill = layer)) +
+    geom_sf(adm$geometry, mapping = aes(), colour = "black", fill = NA) +
+    geom_point(gen, mapping = aes(x = lon, y = lat), size = 1.2, col = "red", pch = 18) +
+    scale_fill_gradientn(name = NULL, 
+                         colours = colpall(10),
+                         limits = c(0, 1)) +
+    theme_void() + 
+    labs(title = species) +
+    theme(legend.position = "right",
+          plot.title = element_text(size = 14, 
+                                    colour = "black", 
+                                    face = "italic"))
+  p
+  ggsave(paste0(output, gsub(" ","_", species),  ".png"),
+         plot = p,
+         width = 20,
+         height = 20,
+         units = "cm")
+  
+}
+
+
+# .........................................
+# .........................................
+# Plot by uses and all together
+
+plots <- list()
+
+for(i in seq_along(sp_d)) {
+  
+  print(spnames[i,"taxa"])
+  
+  r <- sp_d[[i]]
+  r <- as.data.frame(r, xy = TRUE)
+  r <- r[!is.na(r[, "layer"]), ]
+  r[, "layer"] <- round(r[, "layer"] / 1000, 2)
+  
+  gen <- pass[pass$acronym == spnames[[i,"acronym"]], ]
+  gen <- gen[gen$source == "genesys"]
+  gen <- gen[, .(lon, lat)]
+  
+  if(nrow(gen) > 5){
+    x <- extract(sp_d[[i]], as.data.frame(gen))
+    gen <- gen[!is.na(x), ]
+  }
+  
+  legend <- "none"
+  
+  
+  acronym <- names(sp_d[i])
+  acronym <- which(spnames$acronym %in% acronym)
+  species <- paste(spnames[acronym,.(genus, species)], collapse = " ")
+  
+  p <- ggplot() +
+    geom_tile(r, mapping = aes(x = x, y = y, fill = layer)) +
+    geom_sf(adm$geometry, mapping = aes(), colour = "black", fill = NA) +
+    geom_point(gen, mapping = aes(x = lon, y = lat), size = 0.3, col = "red", pch = 18) +
+    scale_fill_gradientn(name = NULL, 
+                         colours = colpall(10),
+                         limits = c(0, 1)) +
+    theme_void() + 
+    labs(title = species) +
+    theme(legend.position = legend,
+          plot.title = element_text(size = 10, 
+                                    colour = "black", 
+                                    face = "italic"))
+  
+  
+  
+  plots[[i]] <- p
+  
+}
+
+table(spnames$use)
+
+
+plots[[12]] <-
+  plots[[12]] +
+  theme(legend.position = "right")
+
+plots[[24]] <-
+  plots[[24]] +
+  theme(legend.position = "right")
+ 
+p <- 
+plots[[1]] + plots[[2]] + plots[[3]] +
+  plots[[4]] + plots[[5]] + plots[[6]] +
+  plots[[7]] + plots[[8]] + plots[[9]] +
+  plots[[10]] + plots[[11]] + plots[[12]] +
+  plot_layout(ncol = 3, nrow = 4)
+
+output <- "output/combined_map/"
+dir.create(output, recursive = TRUE, showWarnings = FALSE)
+
+ggsave(paste0(output, "forrage_map.png"),
+       plot = p,
+       width = 18,
+       height = 25,
+       units = "cm")
+
+
+p <- 
+  plots[[13]] + plots[[14]] + plots[[15]] +
+  plots[[16]] + plots[[17]] + plots[[18]] +
+  plots[[19]] + plots[[20]] + plots[[21]] +
+  plots[[22]] + plots[[23]] + plots[[24]] +
+  plot_layout(ncol = 3, nrow = 4)
+
+ggsave(paste0(output, "fruit_herb_veg_map.png"),
+       plot = p,
+       width = 18,
+       height = 25,
+       units = "cm")
+
+
+# .......................................
+# .......................................
+# plot presence map ####
+# presence <- stack(sp_p)
+# presence <- calc(presence, sum)
+# 
+# r <- as.data.frame(presence, xy = TRUE)
+# r <- r[!is.na(r$layer) & r$layer > 0, ]
+
+# colpall <- colorRampPalette(c('#fee8c8','#fdbb84','#fc8d59',
+#                               '#3690c0','#0570b0','#034e7b'))
+
+
+# ggplot() +
+#   geom_tile(r, mapping = aes(x = x, y = y, fill = layer)) +
+#   geom_sf(adm$geometry, mapping = aes(), colour = "black", fill = NA) +
+#   scale_fill_gradientn(name = NULL, 
+#                        colours = colpall(9),
+#                        labels = c(1, 6, 12, 18),
+#                        breaks = c(1, 6, 12, 18)) +
+#   theme_void()

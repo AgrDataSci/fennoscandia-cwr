@@ -1,0 +1,25 @@
+﻿input_taxon,input_status,family,genus,species,authority,taxonomic_status,acronym,taxa,use
+Dactylis glomerata L.,Accepted,Poaceae,Dactylis,glomerata,L.,Accepted,DACGLO,Dactylis glomerata,forage
+Festuca pratensis Huds.,Accepted,Poaceae,Festuca,pratensis,Huds.,Accepted,FESPRA,Festuca pratensis,forage
+Festuca rubra L.,Accepted,Poaceae,Festuca,rubra,L.,Accepted,FESRUB,Festuca rubra,forage
+Phleum pratense L.,Accepted,Poaceae,Phleum,pratense,L.,Accepted,PHLPRA,Phleum pratense,forage
+Poa palustris L.,Accepted,Poaceae,Poa,palustris,L.,Accepted,POAPAL,Poa palustris,forage
+Poa pratensis L.,Accepted,Poaceae,Poa,pratensis,L.,Accepted,POAPRA,Poa pratensis,forage
+Trifolium hybridum L.,Accepted,Leguminosae,Trifolium,hybridum,L.,Accepted,TRIHYB,Trifolium hybridum,forage
+Trifolium pratense L.,Accepted,Leguminosae,Trifolium,pratense,L.,Accepted,TRIPRA,Trifolium pratense,forage
+Trifolium repens L.,Accepted,Leguminosae,Trifolium,repens,L.,Accepted,TRIREP,Trifolium repens,forage
+Ribes nigrum L.,Accepted,Grossulariaceae,Ribes,nigrum,L.,Accepted,RIBNIG,Ribes nigrum,fruit
+Ribes petraeum Wulfen.,Accepted,Grossulariaceae,Ribes,petraeum,Wulfen,Accepted,RIBPET,Ribes petraeum,fruit
+Ribes spicatum Robson.,Accepted,Grossulariaceae,Ribes,spicatum,Robson,Accepted,RIBSPI,Ribes spicatum,fruit
+Allium scorodoprasum L.,Accepted,Amaryllidaceae,Allium,scorodoprasum,L.,Accepted,ALLSCO,Allium scorodoprasum,vegetable
+Beta vulgaris L.,Accepted,Amaranthaceae,Beta,vulgaris,L.,Accepted,BETVUL,Beta vulgaris,vegetable
+Brassica napus var. napobrassica,Synonym,Brassicaceae,Brassica,napus,L.,Accepted,BRANAP,Brassica napus,vegetable
+Brassica rapa L.( Turnip),Accepted,Brassicaceae,Brassica,rapa,L.,Accepted,BRARAP,Brassica rapa,vegetable
+Carum carvi L.,Accepted,Apiaceae,Carum,carvi,L.,Accepted,CARCAR,Carum carvi,vegetable
+Humulus lupulus L.,Accepted,Cannabaceae,Humulus,lupulus,L.,Accepted,HUMLUP,Humulus lupulus,vegetable
+Alopecurus pratensis L,Accepted,Poaceae,Alopecurus,pratensis,L.,Accepted,ALOPRA,Alopecurus pratensis,forage
+Bromus inermis Leyss. ,Accepted,Poaceae,Bromus,inermis,Leyss.,Accepted,BROINE,Bromus inermis,forage
+Phalaris arundinacea L ,Accepted,Poaceae,Phalaris,arundinacea,L.,Accepted,PHAARU,Phalaris arundinacea,forage
+Angelica archangelica L ,Accepted,Apiaceae,Angelica,archangelica,L.,Accepted,ANGARC,Angelica archangelica,herb
+Origanum vulgare L.,Accepted,Lamiaceae,Origanum,vulgare,L.,Accepted,ORIVUL,Origanum vulgare,herb
+Rumex acetosa L.,Accepted,Polygonaceae,Rumex,acetosa,L.,Accepted,RUMACE,Rumex acetosa,vegetable
