@@ -20,6 +20,11 @@ library("sf")
 library("BiodiversityR")
 library("PresenceAbsence")
 
+sessioninfo::session_info()
+# write session info
+capture.output(sessioninfo::session_info(),
+               file = "script/session_info/05_ensemble_modelling.txt")
+
 #...................................................
 #...................................................
 # Data ####

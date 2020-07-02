@@ -1,5 +1,5 @@
 # Clean occurrence data for distribution analysis 
-# updated by K. de Sousa 
+# K. de Sousa 
 # Inland Norway University
 #..........................................
 #..........................................
@@ -16,6 +16,12 @@ library("sf")
 
 # extra function 
 source("script/helper01_functions.R")
+
+
+sessioninfo::session_info()
+# write session info
+capture.output(sessioninfo::session_info(),
+               file = "script/session_info/03_data_cleaning.txt")
 
 # ........................................
 # ........................................
@@ -48,12 +54,12 @@ myproj <- proj4string(gadm)
 # Read occurrence data ####
 
 # Read genesys data
-gen <- fread("data/raw/genesys_occurrences.csv")
+gen <- fread("data/raw/genesys_occurrences_manual_download.csv")
 
-names(gen) <- c("acronym","accession_number","acquisition_date","lat","lon",
-                "collection_site", "country_origin","id","in_svalbard",
-                "institute","genus", "species","subtaxa","institute_name",
-                "country_name","country")
+# names(gen) <- c("acronym","accession_number","acquisition_date","lat","lon",
+#                 "collection_site", "country_origin","id","in_svalbard",
+#                 "institute","genus", "species","subtaxa","institute_name",
+#                 "country_name","country")
 
 gen[, scientific_name := paste(genus, species)]
 
@@ -62,6 +68,10 @@ gen[, source := "genesys"]
 gen <- gen[, .(acronym, scientific_name, lon, lat, country, source)]
 
 plot(gen[, .(lon, lat)])
+
+sort(table(gen$acronym))
+
+length(table(gen$acronym))
 
 # Read GBIF data
 gbif <- fread("data/raw/gbif_occurrences.csv")
@@ -82,6 +92,10 @@ gbif[, source := "gbif"]
 gbif <- gbif[, .(acronym, scientific_name, lon, lat, country, source)]
 
 plot(gbif[, .(lon, lat)])
+
+sort(table(gbif$acronym))
+
+length(table(gbif$acronym))
 
 # Check occurrences in both datasets
 dt <- rbind(gen, gbif)
@@ -110,6 +124,10 @@ keep <- unlist(lapply(dt$lat, .decimalplaces)) > 0 & keep
 
 dt <- dt[keep, ]
 
+length(unique(dt$acronym))
+
+table(dt$acronym)
+
 #........................................
 #........................................
 # Spatial cleaning 1 ####
@@ -123,6 +141,10 @@ keep <- over(coord, b)
 keep <- !is.na(keep[[1]])
 
 dt <- dt[keep, ]
+
+length(unique(dt$acronym))
+
+table(dt$acronym)
 
 #........................................
 #........................................
@@ -213,10 +235,15 @@ coord <- SpatialPoints(coord, proj4string = CRS(myproj))
 plot(gadm)
 points(coord, col = "blue", pch = 20)
 
+length(unique(dt$acronym))
+
+table(dt$acronym)
+
 # ....................................
 # ....................................
 # remove points within the same grid cell
-bio <- raster("data/bioclim/eto.tif")
+bio <- list.files("data/bioclim/", pattern = ".tif", full.names = TRUE)[1]
+bio <- raster(bio)
 
 acronym <- sort(unique(dt$acronym))
 
@@ -297,11 +324,14 @@ dt %>%
   group_by(acronym, source) %>% 
   count() -> x
 
+length(unique(dt$acronym))
+
+table(dt$acronym)
 
 # write file with cleaned points
 write.csv(dt, "data/passport_data.csv", row.names = FALSE)
 
-x <- dt[dt$acronym == "ALLSCO" & dt$source == "genesys", ]
+x <- dt[dt$acronym == dt$acronym[[1]] & dt$source == "genesys", ]
 
 x %>%
   dplyr::select(lon,lat) %>%

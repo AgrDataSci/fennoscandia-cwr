@@ -6,13 +6,18 @@
 library("rgbif")
 library("data.table")
 
+sessioninfo::session_info()
+# write session info
+capture.output(sessioninfo::session_info(),
+               file = "script/session_info/01_gbif_data_collection.txt")
+
 #..........................................
 #..........................................
 # Data ####
 
-df <- fread("data/species_names.csv")
+dt <- fread("data/species_names.csv")
 
-taxa <- df$taxa
+taxa <- dt$taxa
 
 taxa <- gsub("  ", " ", taxa)
 
@@ -28,7 +33,7 @@ fields <- c("name","scientificName",
            "basisOfRecord","publishingOrg",
            "year","gbifID")
 
-gbif <- NULL
+gbif <- data.frame()
 
 # run over species names
 for (i in seq_along(taxa)){
@@ -36,6 +41,8 @@ for (i in seq_along(taxa)){
   
   # check for all scientific names that include the species names  
   name <- name_suggest(q = taxa[i])
+  
+  name <- name$data
   
   # remove subspecies and varieties
   name <- name[name$rank != "SUBSPECIES", ]
@@ -56,7 +63,7 @@ for (i in seq_along(taxa)){
     
     o$data$taxa <- taxa[i]
     
-    o$data$acronym <- df$acronym[i]
+    o$data$acronym <- dt$acronym[i]
     
     # sometimes it dont come with all desired field 
     # create an empty data.frame and match wich fields

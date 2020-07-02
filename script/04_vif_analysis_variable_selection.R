@@ -11,6 +11,11 @@ library("dismo")
 library("BiodiversityR")
 library("car")
 
+sessioninfo::session_info()
+# write session info
+capture.output(sessioninfo::session_info(),
+               file = "script/session_info/04_vif_analysis_variable_selection.txt")
+
 #...................................................
 #...................................................
 # Data ####

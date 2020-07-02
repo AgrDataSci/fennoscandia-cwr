@@ -7,6 +7,11 @@
 library("genesysr")
 library("data.table")
 
+sessioninfo::session_info()
+# write session info
+capture.output(sessioninfo::session_info(),
+               file = "script/session_info/02_genesys_data_collection.txt")
+
 #..........................................
 #..........................................
 # Data ####
@@ -27,7 +32,7 @@ user_login()
 
 gen_df <- list()
 
-for(i in 21:24) {
+for(i in seq_along(taxa)) {
 
   cat(i, " ",  as.vector(unlist(taxa[[i]])), "\n")
 
@@ -47,6 +52,7 @@ for(i in 21:24) {
   gen_df[[i]] <- call
 
 }
+
 save(gen_df, file = "data/raw/genesys_raw.rda")
 
 #..........................................
@@ -104,6 +110,8 @@ sum(is.na(gen_sub$acronym))
 
 table(gen_sub$acronym)
 
+length(table(gen_sub$acronym))
+
 in_gen <- unique(gen_sub$acronym)
 
 taxa <- do.call("rbind", taxa)
@@ -117,6 +125,8 @@ in_both <- taxa[keep, ]
 write.csv(in_both, "data/raw/in_both_databases.csv", row.names = FALSE)
 
 keep <- gen_sub$acronym %in% in_both$acronym
+
+sum(keep)
 
 gen_sub <- gen_sub[keep, ]
 

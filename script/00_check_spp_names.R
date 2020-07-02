@@ -8,6 +8,11 @@ library("tidyverse")
 library("magrittr")
 library("janitor")
 
+sessioninfo::session_info()
+# write session info
+capture.output(sessioninfo::session_info(),
+               file = "script/session_info/00_check_spp_names.txt")
+
 list.files("data/raw/")
 
 dt <- read.csv("data/raw/spnames.csv", stringsAsFactors = FALSE)
