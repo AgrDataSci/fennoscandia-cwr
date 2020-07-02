@@ -159,6 +159,9 @@ gen <- rbind(gen, x)
 
 gen <- gen[!is.na(gen$country), ]
 
+#keep <- is.na(gen$lat) + is.na(gen$lon) == 0
+#gen <- gen[keep, ]
+
 # .............................................
 # .............................................
 # ............................................
@@ -170,14 +173,17 @@ main <-
   mutate(inSvalbard = as.integer(inSvalbard)) %>% 
   summarise(Genesys = length(acronym),
             Georeferenced = sum(!is.na(lon)),
-            inSvalbard = sum(inSvalbard, na.rm = TRUE),
-            Norway = sum(country == "Norway"),
-            Sweden = sum(country == "Sweden"),
-            Finland = sum(country == "Finland"),
-            Denmark = sum(country == "Denmark"),
-            Russia = sum(country == "Russia"))
+            inSvalbard = sum(inSvalbard == 1 & !is.na(lon)),
+            Norway = sum(country == "Norway" & !is.na(lon)),
+            Sweden = sum(country == "Sweden" & !is.na(lon)),
+            Finland = sum(country == "Finland" & !is.na(lon)),
+            Denmark = sum(country == "Denmark" & !is.na(lon)),
+            Russia = sum(country == "Russia"  & !is.na(lon)))
   
 main
+
+keep <- is.na(gen$lat) + is.na(gen$lon) == 0
+gen <- gen[keep, ]
 
 max_country <-
   gen %>% 

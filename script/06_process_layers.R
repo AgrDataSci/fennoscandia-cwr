@@ -15,7 +15,7 @@ library("sf")
 # ...............................................
 # ...............................................
 # Files and parameters
-path <- "processing/enm"
+path <- "processing/enm/"
 
 # file with spp acronyms and uses
 spnames <- fread("data/species_names.csv")

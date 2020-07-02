@@ -5,6 +5,7 @@
 # Packages ####
 library("Taxonstand")
 library("tidyverse")
+library("magrittr")
 library("janitor")
 
 list.files("data/raw/")
@@ -41,7 +42,6 @@ names(sp_check) <- gsub("new_","", names(sp_check))
 
 sp_check
 
-
 # create an id using species genus and name
 id <- paste0(substr(sp_check$genus, start = 1, stop = 3),
              substr(sp_check$species, start = 1, stop = 3),
@@ -52,7 +52,6 @@ id <- toupper(id)
 length(unique(id)) == length(id)
 
 sp_check$acronym <- id
-
 
 # vector with full name
 sp_check %>% 
@@ -72,9 +71,12 @@ sp <- ifelse(!is.na(taxa[,4]),
 
 sp_check$taxa <- sp
 
-
-
 write.csv(sp_check, "data/species_names.csv",
           row.names = FALSE)
 
+f <- list.files("/Users/kauedesousa/Dropbox (Bioversity CR)/Rcode/euro-cwr/processing/enm")
 
+s <- sp_check$acronym
+
+
+s[!s %in% f]

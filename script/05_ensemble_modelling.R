@@ -27,7 +27,7 @@ library("PresenceAbsence")
 # get the parent wd to return here if needed
 parentwd <- getwd()
 
-outputwd <- "processing/enm2/"
+outputwd <- "processing/enm/"
 dir.create(outputwd, showWarnings = FALSE, recursive = TRUE)
 
 # bioclimatic variables

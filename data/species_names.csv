@@ -1,25 +1,34 @@
-﻿input_taxon,input_status,family,genus,species,authority,taxonomic_status,acronym,taxa,use
-Dactylis glomerata L.,Accepted,Poaceae,Dactylis,glomerata,L.,Accepted,DACGLO,Dactylis glomerata,forage
-Festuca pratensis Huds.,Accepted,Poaceae,Festuca,pratensis,Huds.,Accepted,FESPRA,Festuca pratensis,forage
-Festuca rubra L.,Accepted,Poaceae,Festuca,rubra,L.,Accepted,FESRUB,Festuca rubra,forage
-Phleum pratense L.,Accepted,Poaceae,Phleum,pratense,L.,Accepted,PHLPRA,Phleum pratense,forage
-Poa palustris L.,Accepted,Poaceae,Poa,palustris,L.,Accepted,POAPAL,Poa palustris,forage
-Poa pratensis L.,Accepted,Poaceae,Poa,pratensis,L.,Accepted,POAPRA,Poa pratensis,forage
-Trifolium hybridum L.,Accepted,Leguminosae,Trifolium,hybridum,L.,Accepted,TRIHYB,Trifolium hybridum,forage
-Trifolium pratense L.,Accepted,Leguminosae,Trifolium,pratense,L.,Accepted,TRIPRA,Trifolium pratense,forage
-Trifolium repens L.,Accepted,Leguminosae,Trifolium,repens,L.,Accepted,TRIREP,Trifolium repens,forage
-Ribes nigrum L.,Accepted,Grossulariaceae,Ribes,nigrum,L.,Accepted,RIBNIG,Ribes nigrum,fruit
-Ribes petraeum Wulfen.,Accepted,Grossulariaceae,Ribes,petraeum,Wulfen,Accepted,RIBPET,Ribes petraeum,fruit
-Ribes spicatum Robson.,Accepted,Grossulariaceae,Ribes,spicatum,Robson,Accepted,RIBSPI,Ribes spicatum,fruit
-Allium scorodoprasum L.,Accepted,Amaryllidaceae,Allium,scorodoprasum,L.,Accepted,ALLSCO,Allium scorodoprasum,vegetable
-Beta vulgaris L.,Accepted,Amaranthaceae,Beta,vulgaris,L.,Accepted,BETVUL,Beta vulgaris,vegetable
-Brassica napus var. napobrassica,Synonym,Brassicaceae,Brassica,napus,L.,Accepted,BRANAP,Brassica napus,vegetable
-Brassica rapa L.( Turnip),Accepted,Brassicaceae,Brassica,rapa,L.,Accepted,BRARAP,Brassica rapa,vegetable
-Carum carvi L.,Accepted,Apiaceae,Carum,carvi,L.,Accepted,CARCAR,Carum carvi,vegetable
-Humulus lupulus L.,Accepted,Cannabaceae,Humulus,lupulus,L.,Accepted,HUMLUP,Humulus lupulus,vegetable
-Alopecurus pratensis L,Accepted,Poaceae,Alopecurus,pratensis,L.,Accepted,ALOPRA,Alopecurus pratensis,forage
-Bromus inermis Leyss. ,Accepted,Poaceae,Bromus,inermis,Leyss.,Accepted,BROINE,Bromus inermis,forage
-Phalaris arundinacea L ,Accepted,Poaceae,Phalaris,arundinacea,L.,Accepted,PHAARU,Phalaris arundinacea,forage
-Angelica archangelica L ,Accepted,Apiaceae,Angelica,archangelica,L.,Accepted,ANGARC,Angelica archangelica,herb
-Origanum vulgare L.,Accepted,Lamiaceae,Origanum,vulgare,L.,Accepted,ORIVUL,Origanum vulgare,herb
-Rumex acetosa L.,Accepted,Polygonaceae,Rumex,acetosa,L.,Accepted,RUMACE,Rumex acetosa,vegetable
+"input_taxon","input_status","family","genus","hybrid_marker","species","infraspecific_rank","infraspecific","authority","taxonomic_status","acronym","taxa"
+"Allium ampeloprasum L. (Wild leek)","Accepted","Amaryllidaceae","Allium","","ampeloprasum","","","L.","Accepted","ALLAMP","Allium  ampeloprasum  "
+"Asparagus officinalis L. (Asparagus)","Accepted","Asparagaceae","Asparagus","","officinalis","","","L.","Accepted","ASPOFF","Asparagus  officinalis  "
+"Atriplex hortensis L. (Garden orache)","Accepted","Amaranthaceae","Atriplex","","hortensis","","","L.","Accepted","ATRHOR","Atriplex  hortensis  "
+"Beta vulgaris L. (Beet)","Accepted","Amaranthaceae","Beta","","vulgaris","","","L.","Accepted","BETVUL","Beta  vulgaris  "
+"Brassica napus (L.) Mill. (Swede)","Accepted","Brassicaceae","Brassica","","napus","","","L.","Accepted","BRANAP","Brassica  napus  "
+"Brassica rapa L.( Turnip)","Accepted","Brassicaceae","Brassica","","rapa","","","L.","Accepted","BRARAP","Brassica  rapa  "
+"Campanula rapunculus L. (Bellflower)","Accepted","Campanulaceae","Campanula","","rapunculus","","","L.","Accepted","CAMRAP","Campanula  rapunculus  "
+"Chaerophyllum bulbosum L. (Tulip chervil)","Accepted","Apiaceae","Chaerophyllum","","bulbosum","","","L.","Accepted","CHABUL","Chaerophyllum  bulbosum  "
+"Chenopodium album L. (Fat-hen)","Accepted","Amaranthaceae","Chenopodium","","album","","","L.","Accepted","CHEALB","Chenopodium  album  "
+"Chenopodium bonus-henricus L. (Allgood)","Accepted","Amaranthaceae","Chenopodium","","bonus-henricus","","","L.","Accepted","CHEBON","Chenopodium  bonus-henricus  "
+"Chenopodium foliosum Asch. (Leafy goosefoot)","Accepted","Amaranthaceae","Chenopodium","","foliosum","","","Asch.","Accepted","CHEFOL","Chenopodium  foliosum  "
+"Cichorium intybus L. (Chicory)","Accepted","Compositae","Cichorium","","intybus","","","L.","Accepted","CICINT","Cichorium  intybus  "
+"Crambe maritima L (Sea kale)","Accepted","Brassicaceae","Crambe","","maritima","","","L.","Accepted","CRAMAR","Crambe  maritima  "
+"Daucus carota L (Carrot)","Accepted","Apiaceae","Daucus","","carota","","","L.","Accepted","DAUCAR","Daucus  carota  "
+"Lathyrus tuberosum L. (Groundnut peavine)","Accepted","Leguminosae","Lathyrus","","tuberosus","","","L.","Accepted","LATTUB","Lathyrus  tuberosus  "
+"Nasturtium officinale R. Br. (Watercress)","Accepted","Brassicaceae","Nasturtium","","officinale","","","R.Br.","Accepted","NASOFF","Nasturtium  officinale  "
+"Pastinaca sativa L. (Parsnip)","Accepted","Apiaceae","Pastinaca","","sativa","","","L.","Accepted","PASSAT","Pastinaca  sativa  "
+"Peucedanum ostruthium Coch. (Master wort)","Accepted","Apiaceae","Peucedanum","","ostruthium","","","(L.) W.D.J.Koch","Accepted","PEUOST","Peucedanum  ostruthium  "
+"Rumex acetosa L. (Garden sorrel)","Accepted","Polygonaceae","Rumex","","acetosa","","","L.","Accepted","RUMACE","Rumex  acetosa  "
+"Rumex obtusifolius L. (Broad-leaved dock)","Accepted","Polygonaceae","Rumex","","obtusifolius","","","L.","Accepted","RUMOBT","Rumex  obtusifolius  "
+"Rumex patientia L. (Patience dock)","Accepted","Polygonaceae","Rumex","","patientia","","","L.","Accepted","RUMPAT","Rumex  patientia  "
+"Sanguisorba officinalis L. (Great burnet)","Accepted","Rosaceae","Sanguisorba","","officinalis","","","L.","Accepted","SANOFF","Sanguisorba  officinalis  "
+"Angelica archangelica L (Angelica)","Accepted","Apiaceae","Angelica","","archangelica","","","L.","Accepted","ANGARC","Angelica  archangelica  "
+"Armoracia rusticana (Lamm.) Gaertner. Mey & Scheb. (Horseradish)","Accepted","Brassicaceae","Armoracia","","rusticana","","","P.Gaertn., B.Mey. & Scherb.","Accepted","ARMRUS","Armoracia  rusticana  "
+"Brassica nigra (L.) Koch. (Black mustard)","Accepted","Brassicaceae","Brassica","","nigra","","","(L.) K.Koch","Accepted","BRANIG","Brassica  nigra  "
+"Carum carvi L. (Caraway)","Accepted","Apiaceae","Carum","","carvi","","","L.","Accepted","CARCAR","Carum  carvi  "
+"Humulus lupulus L. (Hops)","Accepted","Cannabaceae","Humulus","","lupulus","","","L.","Accepted","HUMLUP","Humulus  lupulus  "
+"Levisticum officinale Koch. (Garden lovage)","Accepted","Apiaceae","Levisticum","","officinale","","","W.D.J.Koch","Accepted","LEVOFF","Levisticum  officinale  "
+"Mentha spicata (L.) Huds. (Green mint)","Accepted","Lamiaceae","Mentha","","spicata","","","L.","Accepted","MENSPI","Mentha  spicata  "
+"Mentha suaveolens Ehrh. (Apple mint)","Accepted","Lamiaceae","Mentha","","suaveolens","","","Ehrh.","Accepted","MENSUA","Mentha  suaveolens  "
+"Myrrhis odorata (L.) Scop. (Garden myrrh)","Accepted","Apiaceae","Myrrhis","","odorata","","","(L.) Scop.","Accepted","MYRODO","Myrrhis  odorata  "
+"Origanum vulgare L. (Marjoram)","Accepted","Lamiaceae","Origanum","","vulgare","","","L.","Accepted","ORIVUL","Origanum  vulgare  "
+"Sanguisorba minor Scop. (Small burnet)","Accepted","Rosaceae","Sanguisorba","","minor","","","Scop.","Accepted","SANMIN","Sanguisorba  minor  "
