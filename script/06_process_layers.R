@@ -151,11 +151,13 @@ for(i in seq_along(sp)) {
 # ...............................................
 # Create maps ###
 
-#define colours for map of gradient of distribution
-colpall <- colorRampPalette(c("#FFFFFF", "#FFFF80", "#38E009","#1A93AB", "#0C1078"))
+# define colours for map of gradient of distribution
+colpall <- colorRampPalette(c("#FFFFFF", "#FFFF80", 
+                              "#38E009","#1A93AB", 
+                              "#0C1078"))
 
 # order spp names by uses
-spnames <- spnames[order(spnames$use), ]
+spnames <- spnames[order(spnames$acronym), ]
 
 # apply the same order across the list of maps
 sp_d <- sp_d[spnames$acronym]
@@ -217,10 +219,45 @@ for(i in seq_along(sp_d)) {
   
 }
 
+# .........................................
+# .........................................
+# Plot all presences to see the areas with higher diversity ####
+
+output <- "output/diversity/"
+dir.create(output, recursive = TRUE, showWarnings = FALSE)
+
+div <- stack(sp_p)
+div <- calc(div, sum)
+
+r <- as.data.frame(div, xy = TRUE)
+r <- r[!is.na(r$layer) & r$layer > 0, ]
+
+colpall <- colorRampPalette(c('#ffffcc','#ffeda0','#fed976',
+                              '#feb24c','#fd8d3c','#fc4e2a',
+                              '#e31a1c','#bd0026','#800026'))
+
+p <- 
+ggplot() +
+  geom_tile(r, mapping = aes(x = x, y = y, fill = layer)) +
+  geom_sf(adm$geometry, mapping = aes(), colour = "black", fill = NA) +
+  scale_fill_gradientn(name = NULL,
+                       colours = colpall(18),
+                       labels = c(1, 12, 24, 33),
+                       breaks = c(1, 12, 24, 33)) +
+  theme_void() +
+  theme(legend.text = element_text(size = 14),
+        plot.margin = unit(c(1,5,1,1), "mm"))
+
+ggsave(paste0(output, "diversity.png"),
+       plot = p,
+       width = 20,
+       height = 20,
+       dpi = 500,
+       units = "cm")
 
 # .........................................
 # .........................................
-# Plot by uses and all together
+# Plot by uses and all together ####
 
 plots <- list()
 
@@ -311,24 +348,3 @@ ggsave(paste0(output, "fruit_herb_veg_map.png"),
        units = "cm")
 
 
-# .......................................
-# .......................................
-# plot presence map ####
-# presence <- stack(sp_p)
-# presence <- calc(presence, sum)
-# 
-# r <- as.data.frame(presence, xy = TRUE)
-# r <- r[!is.na(r$layer) & r$layer > 0, ]
-
-# colpall <- colorRampPalette(c('#fee8c8','#fdbb84','#fc8d59',
-#                               '#3690c0','#0570b0','#034e7b'))
-
-
-# ggplot() +
-#   geom_tile(r, mapping = aes(x = x, y = y, fill = layer)) +
-#   geom_sf(adm$geometry, mapping = aes(), colour = "black", fill = NA) +
-#   scale_fill_gradientn(name = NULL, 
-#                        colours = colpall(9),
-#                        labels = c(1, 6, 12, 18),
-#                        breaks = c(1, 6, 12, 18)) +
-#   theme_void()
