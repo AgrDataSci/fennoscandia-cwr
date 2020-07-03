@@ -6,11 +6,15 @@
 # Packages
 library("data.table")
 library("ggplot2")
-library("grDevices")
 library("patchwork")
 library("raster")
 library("sp")
 library("sf")
+
+sessioninfo::session_info()
+# write session info
+capture.output(sessioninfo::session_info(),
+               file = "script/session_info/06_process_layers.txt")
 
 # ...............................................
 # ...............................................
@@ -32,10 +36,7 @@ adm
 # ...............................................
 # ...............................................
 # get species names from processed models
-sp <- list.dirs(path)[-1]
-sp <- strsplit(sp, "/")
-sp <- suppressWarnings(do.call("rbind", sp)[,3])
-sp <- sort(unique(sp))
+sp <- spnames$acronym
 n  <- max(seq_along(sp))
 
 # filter spnames and passport data
@@ -47,18 +48,16 @@ keep <- pass$acronym %in% sp
 
 pass <- pass[keep, ]
 
-table(spnames$use)
-
-# each species layer has its own bbox based on the max hull for the 
+# each species layer has its own extent based on the max hull for the 
 # presence points used take a raster that includes all the regional
-# area used here to create a new layer with the same bbox for all species
+# area used here to create a new layer with the same extent for all species
 # use one of the bioclim layers and set all values as zero
 f <- list.files("data/bioclim", pattern = ".tif", full.names = TRUE)[[2]]
 eur <- raster(f)
 eur[eur[] != 0] <- 0
 
 myext <- extent(eur)
-myext[1] <- -10.5
+#myext[1] <- -10.5
 myext[2] <- 48
 
 eur <- crop(eur, myext)

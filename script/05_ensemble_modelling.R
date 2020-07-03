@@ -2,7 +2,7 @@
 #...................................................
 # Model species distribution using bioclimatic variables
 # 
-# Kaue de Sousa
+# Kauê de Sousa
 # Inland Norway University
 # 
 # ...................................................
@@ -173,12 +173,13 @@ for (i in seq_along(sp)) {
   
   # reduce sampling bias removing points within the same grid cell
   r <- raster(ext)
-  # set the resolution of the cells to ~ 6 arc-min
   res(r) <- c(1, 1)
 
   coord <- as.data.frame(coord)
   
   coord <- gridSample(coord, r, n = 1)
+  
+  cat("Using ", nrow(coord), " presence points \n")
   
   # Run ensemble modelling
   # step 1: model calibration
@@ -196,9 +197,9 @@ for (i in seq_along(sp)) {
                                           SINK = TRUE, 
                                           species.name = sp[[i]],
                                           BIOCLIM = 1,
-                                          MAHAL = 0,
                                           DOMAIN = 1, 
                                           MAXNET = 1,
+                                          MAHAL = 0,
                                           GBM = 0,
                                           GAM = 0,
                                           GLM = 0,
