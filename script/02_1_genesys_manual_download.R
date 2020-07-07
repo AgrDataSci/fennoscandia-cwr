@@ -40,7 +40,7 @@ for(i in seq_along(a)){
   
   f[, species := taxa[i, "species"]]
   
-  f <- na.omit(f)
+  # f <- na.omit(f)
   
   f[, country := NA]
   

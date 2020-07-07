@@ -41,7 +41,7 @@ for(i in seq_along(taxa)) {
 
   tax <- list(genus = genus, species = sp)
 
-  call <- get_accessions(filters = mcpd_filter(SAMPSTAT = c(100, 110, 120, 130, 200),
+  call <- get_accessions(filters = mcpd_filter(#SAMPSTAT = c(100, 110, 120, 130, 200),
                                                GENUS = tax$genus,
                                                SPECIES = tax$species))
 
@@ -111,23 +111,5 @@ sum(is.na(gen_sub$acronym))
 table(gen_sub$acronym)
 
 length(table(gen_sub$acronym))
-
-in_gen <- unique(gen_sub$acronym)
-
-taxa <- do.call("rbind", taxa)
-
-target <- unique(taxa$acronym)
-
-keep <- target %in% in_gen
-
-in_both <- taxa[keep, ]
-
-write.csv(in_both, "data/raw/in_both_databases.csv", row.names = FALSE)
-
-keep <- gen_sub$acronym %in% in_both$acronym
-
-sum(keep)
-
-gen_sub <- gen_sub[keep, ]
 
 write.csv(gen_sub, file = "data/raw/genesys_occurrences.csv", row.names = FALSE)

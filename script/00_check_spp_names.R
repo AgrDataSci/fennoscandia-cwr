@@ -75,13 +75,10 @@ sp <- ifelse(!is.na(taxa[,4]),
              sp)
 
 sp_check$taxa <- sp
+sp_check$use <- dt$use
+
+table(sp_check$use)
 
 write.csv(sp_check, "data/species_names.csv",
           row.names = FALSE)
 
-f <- list.files("/Users/kauedesousa/Dropbox (Bioversity CR)/Rcode/euro-cwr/processing/enm")
-
-s <- sp_check$acronym
-
-
-s[!s %in% f]

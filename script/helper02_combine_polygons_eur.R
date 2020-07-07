@@ -15,15 +15,11 @@ iso %<>%
   select(alpha3) %>% 
   t()
 
-
-
 # .............................
 # .............................
-# read world polygon and keep european countries
-# except russia, which will be added later
-list.files("data/gadm/other")
-
-eur <- readOGR(dsn = "data/gadm/world", layer = "world_borders_adm0")
+# read world polygon and keep European countries
+# data is kept in an external hard drive
+eur <- readOGR(dsn = "/Volumes/BioversityInt/shapefiles/world_borders/", layer = "world_borders_adm0")
 
 eur <- eur[eur$ADM0_A3 %in% iso, ]
 
@@ -38,40 +34,6 @@ proj4string(e) <- proj4string(eur)
 eur <- raster::intersect(eur, e)
 
 plot(eur)
-
-
-# # ...............................
-# # ...............................
-# # dissolve russia layer
-# rus <- read_sf(dsn = "data/gadm/other", layer = "gadm36_RUS_2")
-# 
-# rus %>% 
-#   st_set_geometry(NULL) %>% 
-#   glimpse()
-# 
-# rus$area <- st_area(rus)
-# 
-# rus %>% 
-#   summarise(area = sum(area)) ->
-#   rus_eur
-# 
-# rus <- as(rus_eur, "Spatial")
-# 
-# rus_df <- eur@data[1,]
-# 
-# rus_df[1,] <- c("Russia","RUS","Russia")
-# 
-# rus@data <- rus_df
-# 
-# plot(rus)
-# 
-# # combine the datasets into a single polygon
-# gadm <- list(eur,
-#              rus)
-# 
-# gadm <- do.call("bind", gadm)
-# 
-# plot(gadm)
 
 writeOGR(eur, 
          dsn = "data/gadm/europe",
@@ -102,7 +64,7 @@ writeOGR(eur,
 buff <- SpatialPolygons(eur@polygons, 
                         proj4string = CRS(proj4string(eur)) )
 
-buff <- gBuffer(buff, width = 0.15)
+buff <- gBuffer(buff, width = 0.5)
 
 # buffer into polygons dataframe
 ids <- sapply(slot(buff, "polygons"), function(x) slot(x, "ID"))
@@ -128,7 +90,7 @@ writeOGR(spdf,
 buff <- SpatialPolygons(eur@polygons, 
                         proj4string = CRS(proj4string(eur)))
 
-buff <- gBuffer(buff, width = -0.15)
+buff <- gBuffer(buff, width = -0.55)
 
 e <- raster::intersect(buff, eur)
 
@@ -169,5 +131,16 @@ writeOGR(pdf,
          driver = "ESRI Shapefile",
          overwrite_layer = TRUE)
 
+# .....................................
+# .....................................
+# Ecorregions ####
+
+eco <- st_read("/Volumes/BioversityInt/shapefiles/tnc_terr_ecoregions/tnc_terr_ecoregions.shp")
+eco <- st_as_sf(eco)
+
+eur <- st_read("data/gadm/europe/europe.shp")
+eur <- st_as_sf(eur)
+
+st_crop(eco, eur)
 
 

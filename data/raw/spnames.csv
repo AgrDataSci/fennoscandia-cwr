@@ -1,34 +1,36 @@
-species,use
-Allium ampeloprasum L. (Wild leek),"Bulbs used, previously cultivated "
-Asparagus officinalis L. (Asparagus),Young shoot harvested in spring
-Atriplex hortensis L. (Garden orache),"Leafy vegetable, previously cultivated"
-Beta vulgaris L. (Beet),"Root crop, vegetable, sugar and fodder"
-Brassica napus (L.) Mill. (Swede),"Root vegetable, also oil seed crop "
-Brassica rapa L.( Turnip),"Root vegetable, also oil seed crop"
-Campanula rapunculus L. (Bellflower),Root and leafy vegetable
-Chaerophyllum bulbosum L. (Tulip chervil),"Leafy vegetable, cultivation in decline"
-Chenopodium album L. (Fat-hen),"Weedy plant, previously cultivated "
-Chenopodium bonus-henricus L. (Allgood),"Leafy vegetable, previously a pot herb"
-Chenopodium foliosum Asch. (Leafy goosefoot),"Leafy vegetable, previously cultivated"
-Cichorium intybus L. (Chicory),"Leafy vegetable, roots also used"
-Crambe maritima L (Sea kale),"Leafy vegetable, previously cultivated "
-Daucus carota L (Carrot),"Root crop, commonly cultivated"
-Lathyrus tuberosum L. (Groundnut peavine),"Tuber crops, flowers used for perfumes"
-Nasturtium officinale R. Br. (Watercress),Leafy vegetable
-Pastinaca sativa L. (Parsnip),"Root vegetable, wild types with sour root"
-Peucedanum ostruthium Coch. (Master wort),"Root crop, previously cultivated"
-Rumex acetosa L. (Garden sorrel),"Leafy vegetable, previously cultivated"
-Rumex obtusifolius L. (Broad-leaved dock),"Leafy vegetable, previously cultivated "
-Rumex patientia L. (Patience dock),"Leafy vegetable, previously cultivated"
-Sanguisorba officinalis L. (Great burnet),"Leafy vegetable, rarely cultivated"
-Angelica archangelica L (Angelica),"Petioles, leaves and seeds used"
-Armoracia rusticana (Lamm.) Gaertner. Mey & Scheb. (Horseradish),"Root crop, cultivated for its spicy taste"
-Brassica nigra (L.) Koch. (Black mustard),Seeds used to flavour food
-Carum carvi L. (Caraway),Seeds used to flavour food
-Humulus lupulus L. (Hops),Flowers cops used to flavour beer
-Levisticum officinale Koch. (Garden lovage),"Leafy herb, used for soups and salads"
-Mentha spicata (L.) Huds. (Green mint),"Leafy aromatic plant, multiple uses"
-Mentha suaveolens Ehrh. (Apple mint),"Leafy aromatic plant, multiple uses"
-Myrrhis odorata (L.) Scop. (Garden myrrh),"Leafy herb, used as spice"
-Origanum vulgare L. (Marjoram),"Leafy herb, used as spice"
-Sanguisorba minor Scop. (Small burnet),"Leafy herb, multiple uses"
+species,use,use2
+Allium scorodoprasum ,Bulb,Previously cultivated
+Allium ampeloprasum L. (Wild leek),Bulb,
+Angelica archangelica L (Angelica),Stem,All parts used
+Armoracia rusticana (Lamm.) Gaertner. Mey & Scheb. (Horseradish),Root,Cultivated for its spicy taste
+Asparagus officinalis L. (Asparagus),Shoot,Harvested in spring
+Atriplex hortensis L. (Garden orache),Leafy,Previously cultivated
+Beta vulgaris L. (Beet),Root,Also for sugar and fodder
+Brassica napus (L.) Mill. (Swede),Root,Also for oil seed  
+Brassica nigra (L.) Koch. (Black mustard),Seed,Used to flavour food
+Brassica rapa L.( Turnip),Root,Also for oil seed
+Campanula rapunculus L. (Bellflower),Leafy,Roots also used
+Carum carvi L. (Caraway),Seed,Used to flavour food
+Chaerophyllum bulbosum L. (Tulip chervil),Leafy,cultivation in decline
+Chenopodium album L. (Fat-hen),Leafy,"Weedy plant, previously cultivated"
+Chenopodium bonus-henricus L. (Allgood),Leafy,Previously a pot herb
+Chenopodium foliosum Asch. (Leafy goosefoot),Leafy,Previously cultivated
+Cichorium intybus L. (Chicory),Leafy,Roots also used
+Crambe maritima L (Sea kale),Leafy,Previously cultivated
+Daucus carota L (Carrot),Root,Commonly cultivated
+Humulus lupulus L. (Hops),Cops,Flowers cops used to flavour beer
+Lathyrus tuberosum L. (Groundnut peavine),Root,Also flowers used for perfumes
+Levisticum officinale Koch. (Garden lovage),Leafy,Used for soups and salads
+Mentha spicata (L.) Huds. (Green mint),Leafy,"Aromatic plant, multiple uses"
+Mentha suaveolens Ehrh. (Apple mint),Leafy,"Aromatic plant, multiple uses"
+Myrrhis odorata (L.) Scop. (Garden myrrh),Leafy,Used as spice
+Nasturtium officinale R. Br. (Watercress),Leafy,Aqua plant
+Origanum vulgare L. (Marjoram),Leafy,Used as spice
+Pastinaca sativa L. (Parsnip),Root,Wild types with sour root
+Peucedanum ostruthium Coch. (Master wort),Root,Previously cultivated
+Rumex acetosa L. (Garden sorrel),Leafy,Previously cultivated
+Rumex patientia L. (Patience dock),Leafy,Previously cultivated
+Sanguisorba minor Scop. (Small burnet),Leafy,Multiple uses
+Sanguisorba officinalis L. (Great burnet),Leafy,Rarely cultivated
+Rumex obtusifolus L. (broad-leaved dock),Leafy,
+Rumex scutatus L. (Fresnh sorrel),Leafy,

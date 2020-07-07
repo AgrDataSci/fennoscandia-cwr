@@ -56,11 +56,6 @@ myproj <- proj4string(gadm)
 # Read genesys data
 gen <- fread("data/raw/genesys_occurrences_manual_download.csv")
 
-# names(gen) <- c("acronym","accession_number","acquisition_date","lat","lon",
-#                 "collection_site", "country_origin","id","in_svalbard",
-#                 "institute","genus", "species","subtaxa","institute_name",
-#                 "country_name","country")
-
 gen[, scientific_name := paste(genus, species)]
 
 gen[, source := "genesys"]
@@ -149,7 +144,7 @@ table(dt$acronym)
 #........................................
 #........................................
 # Spatial cleaning 2 ####
-# put genesys data in a different dataset
+# put GENESYS data in a different dataset
 gen <- dt[dt$source == "genesys", ]
 dt <- dt[dt$source == "gbif", ]
 

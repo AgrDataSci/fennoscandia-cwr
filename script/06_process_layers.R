@@ -188,10 +188,10 @@ for(i in seq_along(sp_d)) {
   gen <- gen[gen$source == "genesys"]
   gen <- gen[, .(lon, lat)]
   
-  if(nrow(gen) > 5){
-    x <- extract(sp_d[[i]], as.data.frame(gen))
-    gen <- gen[!is.na(x), ]
-  }
+  # if(nrow(gen) > 5){
+  #   x <- extract(sp_d[[i]], as.data.frame(gen))
+  #   gen <- gen[!is.na(x), ]
+  # }
   
   acronym <- names(sp_d[i])
   acronym <- which(spnames$acronym %in% acronym)
@@ -209,7 +209,9 @@ for(i in seq_along(sp_d)) {
     theme(legend.position = "right",
           plot.title = element_text(size = 14, 
                                     colour = "black", 
-                                    face = "italic"))
+                                    face = "italic"),
+          legend.text = element_text(size = 14),
+          plot.margin = unit(c(1,5,1,1), "mm"))
   p
   ggsave(paste0(output, gsub(" ","_", species),  ".png"),
          plot = p,
@@ -242,8 +244,8 @@ ggplot() +
   geom_sf(adm$geometry, mapping = aes(), colour = "black", fill = NA) +
   scale_fill_gradientn(name = NULL,
                        colours = colpall(18),
-                       labels = c(1, 12, 24, 33),
-                       breaks = c(1, 12, 24, 33)) +
+                       labels = c(5,15,25,35),
+                       breaks = c(5,15,25,35)) +
   theme_void() +
   theme(legend.text = element_text(size = 14),
         plot.margin = unit(c(1,5,1,1), "mm"))
@@ -258,7 +260,9 @@ ggsave(paste0(output, "diversity.png"),
 # .........................................
 # .........................................
 # Plot by uses and all together ####
-
+colpall <- colorRampPalette(c("#FFFFFF", "#FFFF80", 
+                              "#38E009","#1A93AB", 
+                              "#0C1078"))
 plots <- list()
 
 for(i in seq_along(sp_d)) {
@@ -274,22 +278,26 @@ for(i in seq_along(sp_d)) {
   gen <- gen[gen$source == "genesys"]
   gen <- gen[, .(lon, lat)]
   
-  if(nrow(gen) > 5){
-    x <- extract(sp_d[[i]], as.data.frame(gen))
-    gen <- gen[!is.na(x), ]
-  }
+  # if(nrow(gen) > 5){
+  #   x <- extract(sp_d[[i]], as.data.frame(gen))
+  #   gen <- gen[!is.na(x), ]
+  # }
   
   legend <- "none"
   
   
   acronym <- names(sp_d[i])
   acronym <- which(spnames$acronym %in% acronym)
-  species <- paste(spnames[acronym,.(genus, species)], collapse = " ")
+  spp <- spnames[acronym,.(genus)]
+  spp <- substr(spp, start = 1, stop = 1)
+  
+  species <- paste0(spp, ". ", spnames[acronym,.(species)])
+  
   
   p <- ggplot() +
     geom_tile(r, mapping = aes(x = x, y = y, fill = layer)) +
     geom_sf(adm$geometry, mapping = aes(), colour = "black", fill = NA) +
-    geom_point(gen, mapping = aes(x = lon, y = lat), size = 0.3, col = "red", pch = 18) +
+    geom_point(gen, mapping = aes(x = lon, y = lat), size = 0.6, col = "red", pch = 18) +
     scale_fill_gradientn(name = NULL, 
                          colours = colpall(10),
                          limits = c(0, 1)) +
@@ -306,45 +314,65 @@ for(i in seq_along(sp_d)) {
   
 }
 
+names(plots) <- names(sp_d)
+
 table(spnames$use)
 
+# leafy spp
+leafy <- sort(spnames$acronym[spnames$use == "Leafy"])
 
-plots[[12]] <-
-  plots[[12]] +
+leafy <- plots[leafy]
+
+last <- length(leafy)
+
+leafy[[last]] <-
+  leafy[[last]] +
   theme(legend.position = "right")
 
-plots[[24]] <-
-  plots[[24]] +
-  theme(legend.position = "right")
- 
 p <- 
-plots[[1]] + plots[[2]] + plots[[3]] +
-  plots[[4]] + plots[[5]] + plots[[6]] +
-  plots[[7]] + plots[[8]] + plots[[9]] +
-  plots[[10]] + plots[[11]] + plots[[12]] +
-  plot_layout(ncol = 3, nrow = 4)
+  leafy[[1]] + leafy[[2]] + leafy[[3]] + leafy[[4]] + 
+  leafy[[5]] + leafy[[6]] + leafy[[7]] + leafy[[8]] + 
+  leafy[[9]] + leafy[[10]] + leafy[[11]] + leafy[[12]] +
+  leafy[[13]] + leafy[[14]] + leafy[[15]] + leafy[[16]] +
+  leafy[[17]] + leafy[[18]] + leafy[[19]] + leafy[[20]] +
+  plot_layout(ncol = 4, nrow = 5)
 
 output <- "output/combined_map/"
 dir.create(output, recursive = TRUE, showWarnings = FALSE)
 
-ggsave(paste0(output, "forrage_map.png"),
+ggsave(paste0(output, "leafy_map.png"),
        plot = p,
-       width = 18,
+       width = 20,
        height = 25,
+       dpi = 950,
        units = "cm")
 
+# .................................
+# .................................
+# the other uses
+other <- sort(spnames$acronym[spnames$use != "Leafy"])
+
+other <- plots[other]
+
+last <- length(other)
+
+other[[last]] <-
+  other[[last]] +
+  theme(legend.position = "right")
 
 p <- 
-  plots[[13]] + plots[[14]] + plots[[15]] +
-  plots[[16]] + plots[[17]] + plots[[18]] +
-  plots[[19]] + plots[[20]] + plots[[21]] +
-  plots[[22]] + plots[[23]] + plots[[24]] +
-  plot_layout(ncol = 3, nrow = 4)
+  other[[1]] + other[[2]] + other[[3]] + 
+  other[[4]] + other[[5]] + other[[6]] + 
+  other[[7]] + other[[8]] + other[[9]] + 
+  other[[10]] + other[[11]] + other[[12]] +
+  other[[13]] + other[[14]] + other[[15]] +
+  plot_layout(ncol = 3, nrow = 5)
 
-ggsave(paste0(output, "fruit_herb_veg_map.png"),
+ggsave(paste0(output, "all_other_uses_map.png"),
        plot = p,
        width = 18,
        height = 25,
+       dpi = 950,
        units = "cm")
 
 
