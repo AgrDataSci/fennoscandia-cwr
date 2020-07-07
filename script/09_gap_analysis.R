@@ -9,14 +9,13 @@ sessioninfo::session_info()
 capture.output(sessioninfo::session_info(),
                file = "script/session_info/09_gap_analysis.txt")
 
-# obtaining occurrences from GENESYS
-# data(CucurbitaData)
-
 # presence rasters
 load("processing/presence_raster/presence_raster.rda")
 
 # observed points
 dt <- fread("data/passport_data.csv")
+
+species <- fread("data/species_names.csv")
 
 # ecoregions
 eco <- readOGR(dsn = "data/gadm/ecoregions", layer = "ecoregions_eur")
@@ -48,36 +47,50 @@ dt <- as.data.frame(dt)
 # get species names from the data
 spp <- unique(dt$taxon)
 
-##Obtaining raster_list
-#data(CucurbitaRasters)
-#CucurbitaRasters <- raster::unstack(CucurbitaRasters)
+# ..................................
+# rename raster layers
+sp_p <- sp_p[as.character(spp)]
 
+for(i in seq_along(spp)) {
+  names(sp_p[[i]]) <- as.character(spp)[[i]]
+}
 
+sp_p
 
-##Obtaining protected areas raster
-data(ProtectedAreas)
+output <- "output/gap_analysis/"
+dir.create(output, showWarnings = FALSE, recursive = TRUE)
 
-##Obtaining ecoregions shapefile
-data(ecoregions)
 
 #Running all three ex situ gap analysis steps using FCSex function
-FCSex_df <- FCSex(Species_list=speciesList,
-                  Occurrence_data=CucurbitaData,
-                  Raster_list=CucurbitaRasters,
-                  Buffer_distance=50000,
-                  Ecoregions_shp=ecoregions
-)
+FCSex_df <- FCSex(Species_list = spp,
+                  Occurrence_data = dt,
+                  Raster_list = sp_p,
+                  Buffer_distance = 50000,
+                  Ecoregions_shp = eco)
+
+write.csv(FCSex_df, paste0(output, "fcsex.csv"), row.names = FALSE)
 
 #Running all three in situ gap analysis steps using FCSin function
-FCSin_df <- FCSin(Species_list=speciesList,
-                  Occurrence_data=CucurbitaData,
-                  Raster_list=CucurbitaRasters,
-                  Ecoregions_shp=ecoregions,
-                  Pro_areas=ProtectedAreas)
+FCSin_df <- FCSin(Species_list = spp,
+                  Occurrence_data = dt,
+                  Raster_list = sp_p,
+                  Ecoregions_shp = eco,
+                  Pro_areas = pa)
+
+write.csv(FCSin_df, paste0(output, "fcsin.csv"), row.names = FALSE)
 
 ## Combine gap analysis metrics
 FCSc_mean_df <- FCSc_mean(FCSex_df = FCSex_df,FCSin_df = FCSin_df)
 
-##Running Conservation indicator across taxa
-indicator_df  <- indicator(FCSc_mean_df)
+gap <- merge(FCSex_df, FCSin_df, by = "species")
+
+FCSc_mean_df <- FCSc_mean_df[, c(1, which(!names(FCSc_mean_df) %in% names(gap)))]
+
+gap <- merge(gap, FCSc_mean_df, by = "species")
+
+names(gap)[names(gap)=="species"] <- "acronym"
+
+gap <- merge(species[,c("genus","species","use","acronym")], gap, by = "acronym")
+
+write.csv(gap, paste0(output, "gap.csv"), row.names = FALSE)
 
