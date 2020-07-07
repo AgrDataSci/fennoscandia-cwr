@@ -106,6 +106,10 @@ for(i in seq_along(sp)) {
   
 }
 
+# save it for the gap analysis
+output <- "processing/presence_raster/"
+dir.create(output, showWarnings = FALSE, recursive = TRUE)
+save(sp_p, file = paste0(output, "presence_raster.rda"))
 
 # ...............................................
 # ...............................................

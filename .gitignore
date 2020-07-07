@@ -43,4 +43,7 @@ vignettes/*.pdf
 processing/
 manuscript/
 data/gadm/wdpa/
-
+data/gadm/wdpa/wdpa.dbf
+data/gadm/wdpa/wdpa.prj
+data/gadm/wdpa/wdpa.shp
+data/gadm/wdpa/wdpa.shx

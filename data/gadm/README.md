@@ -16,7 +16,7 @@ Citation:
 
 # Protected areas
 
-World Database on Protected Areas downloaded from <https://www.protectedplanet.net/>. The shapefile was clipped in R using the file `gadm/europe/europe.shp` as baseline. However the files are too large and were not uploaded to GitHub.
+World Database on Protected Areas downloaded from <https://www.protectedplanet.net/>. The shapefile was clipped in R using the file `gadm/europe/europe.shp` as baseline. Then it was transformed into a raster using ArcGIS. 
 
 Citation:
 >UNEP-WCMC (2020), The World Database on Protected Areas (WDPA) statistics. Cambridge, UK: UNEP- WCMC. Accessed on: [05/07/2020]. Available at: <https://www.protectedplanet.net/>

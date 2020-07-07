@@ -1,8 +1,10 @@
 # Make a boxplot of AUCs from model outputs
-# this produces Fig. S7
-
 library("ggplot2")
-library("svglite")
+
+sessioninfo::session_info()
+# write session info
+capture.output(sessioninfo::session_info(),
+               file = "script/session_info/08_auc_boxplot.txt")
 
 spp_dt <- read.csv("data/species_names.csv")
 
@@ -24,7 +26,9 @@ for(i in seq_along(spp)){
 
 auc <- merge(auc, spp_dt[,c("acronym","genus","species","authority")], by = "acronym")
 
-auc$taxa <- with(auc, paste(genus, species))
+auc$genus_short <- substr(auc$genus, start = 1, stop = 1)
+
+auc$taxa <- with(auc, paste0(genus_short, ". ", species))
 
 auc$taxa <- factor(auc$taxa, levels = sort(unique(auc$taxa)))
 
@@ -52,7 +56,7 @@ dir.create(output, recursive = TRUE, showWarnings = FALSE)
 
 ggsave(paste0(output, "/auc_models.png"),
        plot = p,
-       width = 10,
+       width = 16,
        height = 9,
        dpi = 500,
        units = "cm")
