@@ -42,7 +42,6 @@ vignettes/*.pdf
 # Local folder files
 processing/
 manuscript/
-data/gadm/wdpa/
 data/gadm/wdpa/wdpa.dbf
 data/gadm/wdpa/wdpa.prj
 data/gadm/wdpa/wdpa.shp
