@@ -4,7 +4,6 @@
 library("ggplot2")
 library("svglite")
 
-
 spp_dt <- read.csv("data/species_names.csv")
 
 spp <- list.files("processing/enm")
@@ -25,7 +24,7 @@ for(i in seq_along(spp)){
 
 auc <- merge(auc, spp_dt[,c("acronym","genus","species","authority")], by = "acronym")
 
-auc$taxa <- with(auc, paste(genus, species, authority))
+auc$taxa <- with(auc, paste(genus, species))
 
 auc$taxa <- factor(auc$taxa, levels = sort(unique(auc$taxa)))
 
