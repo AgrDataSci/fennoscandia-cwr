@@ -42,5 +42,5 @@ vignettes/*.pdf
 # Local folder files
 processing/
 manuscript/
-
+data/gadm/wdpa/
 
