@@ -28,7 +28,6 @@ pa <- raster("data/gadm/wdpa/wdpa_raster.tif")
 # dissolve the raster
 pa[pa[] > 1 ] <- 1
 
-
 # ................................
 # .................................
 # configure observed points 
@@ -106,7 +105,7 @@ gap$taxa <- paste0(substr(gap$genus, start = 1, stop = 1), ". ", gap$species)
 
 # sort values from least to high priority
 gap %<>% 
-  arrange(FCSc_mean)
+  arrange(desc(FCSc_mean))
 
 gap$taxa <- factor(gap$taxa, levels = gap$taxa)
 
@@ -123,17 +122,24 @@ gap$index <- gsub("FCSc_mean","Final Conservation Score", gap$index)
 
 unique(gap$index)
 
-gap$index <- factor(gap$index, levels = c("ERS ex-situ", "FCS ex-situ", "GRS ex-situ", "SRS ex-situ",
-                                          "ERS in-situ", "FCS in-situ", "GRS in-situ", "SRS in-situ", 
+gap$index <- factor(gap$index, levels = c("ERS ex-situ", "GRS ex-situ", "SRS ex-situ", "FCS ex-situ",
+                                          "ERS in-situ", "GRS in-situ", "SRS in-situ", "FCS in-situ",
                                           "Final Conservation Score"))
 
-spp
+
 
 ggplot() +
-  geom_point(gap[!grepl("Final", gap$index), ], 
-             mapping = aes(x = value, y = taxa, 
-                           fill = index, color = index), 
-             shape = 21) +
+  geom_point(gap, 
+             mapping = aes(x = value, y = taxa,
+                           fill = index, color = index, 
+                           shape = index), size = 2.5) +
+  scale_shape_manual(values = c(rep(21, 4), rep(22, 4), 23),
+                     name = "") +
+  scale_x_continuous(limits = c(0, 100), expand = c(0.015,0.015)) +
+  scale_color_manual(values = c(rep(c("#1e90ff","#6a5acd","#228b22",'#000000'), 2), "#e31a1c"),
+                     name = "") +
+  scale_fill_manual(values = c(rep(c("#1e90ff","#6a5acd","#228b22",'#000000'), 2), "#e31a1c"),
+                    name = "") +
   annotate("rect", 
            xmin = 0, xmax = 25, 
            ymin = 0, ymax = length(spp) + 1,
@@ -153,26 +159,27 @@ ggplot() +
   annotate("text",
            x = c(12.5, 37.5, 62.5, 87.5),
            y = length(spp) + 0.7,
-           label = c("High priority","Medium priority","Low priority","Sufficiently conserved"),
-           colour = "black",
-           size = 2.5) +
+           label = c("High priority","Medium priority",
+                     "Low priority","Sufficiently conserved"),
+           colour = "grey20",
+           size = 3.5) +
   labs(y = "", x = "Conservation score") +
   theme_bw() +
   theme(panel.grid.major.x = element_blank(),
         panel.grid.minor.x = element_blank(),
-        panel.grid.major.y = element_line(colour = "#f0f0f0", linetype = "dashed"))
-
-  geom_point(gap[grepl("in-", gap$index), ], 
-             mapping = aes(x = value, y = taxa,
-                           fill = index, color = index), 
-             shape = 25) +
-  geom_point(gap[grepl("Final", gap$index), ], 
-             mapping = aes(x = value, y = taxa), 
-             shape = 23, col = "red", fill = "red", size = 3)
-
-
-rects <- data.frame(xstart = seq(0, 75, 25), 
-                    xend = seq(25, 100, 25), 
-                    col = letters[1:4])
+        panel.grid.major.y = element_line(colour = "#f0f0f0", linetype = "dashed"),
+        axis.title.x = element_text(size = 13, color = "grey20", face = "bold"),
+        axis.text.x = element_text(size = 12, color = "grey20"),
+        axis.text.y = element_text(size = 12, color = "grey20", face = "italic"),
+        legend.text = element_text(size = 11, color = "grey20"),
+        #legend.position = c(0.65,0.15),
+        panel.border = element_rect(linetype = "solid", fill = NA,
+                                    colour = "grey20"),
+        legend.background = element_blank(),
+        text = element_text(family = "sans"))
 
 
+ggsave(paste0(output, "conservation_score.png"), plot = last_plot(),
+       width = 10,
+       height = 9,
+       dpi = 1000)
