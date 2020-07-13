@@ -10,6 +10,7 @@ library("patchwork")
 library("raster")
 library("sp")
 library("sf")
+library("ggspatial")
 
 sessioninfo::session_info()
 # write session info
@@ -228,6 +229,7 @@ for(i in seq_along(sp_d)) {
 # .........................................
 # .........................................
 # Plot all presences to see the areas with higher diversity ####
+# https://www.r-spatial.org/r/2018/10/25/ggplot2-sf.html
 
 output <- "output/diversity/"
 dir.create(output, recursive = TRUE, showWarnings = FALSE)
@@ -252,13 +254,44 @@ ggplot() +
                        breaks = c(5,15,25,35)) +
   theme_void() +
   theme(legend.text = element_text(size = 14),
-        plot.margin = unit(c(1,5,1,1), "mm"))
+        plot.margin = unit(c(0,3,0,0), "mm"))
+
+p <- 
+  p +
+  annotation_north_arrow(location = "br", 
+                         which_north = "true", 
+                         pad_y = unit(0.5, "cm"), 
+                         style = north_arrow_fancy_orienteering) +
+  annotation_scale(location = "br") + 
+  annotate(geom = "text", 
+           x = 2.8,
+           y = 56.5,
+           label = "North Sea",
+           fontface = "italic",
+           color = "grey30", 
+           size = 3.5) +
+  annotate(geom = "text", 
+           x = 34.5,
+           y = 43.5,
+           label = "Black Sea",
+           fontface = "italic",
+           color = "grey30", 
+           size = 3.5) +
+  annotate(geom = "text", 
+           x = 3.5,
+           y = 69,
+           label = "Norwegian Sea",
+           fontface = "italic",
+           color = "grey30", 
+           size = 3.5)
+
+p
 
 ggsave(paste0(output, "diversity.png"),
        plot = p,
        width = 20,
        height = 20,
-       dpi = 500,
+       dpi = 900,
        units = "cm")
 
 # .........................................
