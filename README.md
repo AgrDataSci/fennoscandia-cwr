@@ -1,7 +1,7 @@
 <!-- badges: start -->
 [![License](https://img.shields.io/badge/License-CC%20BY%204.0-blue.svg)](https://creativecommons.org/licenses/by/4.0/)
 [![DOI](https://zenodo.org/badge/249921486.svg)](https://zenodo.org/badge/latestdoi/249921486)
-[![paper](https://img.shields.io/badge/Agriculture-10.3390%2Fagriculture10080340-green)](10.3390/agriculture10080340)
+[![paper](https://img.shields.io/badge/Agriculture-10.3390%2Fagriculture10080340-green)](https://doi.org/10.3390/agriculture10080340)
 <!-- badges: end -->
 
 ## Replication data for: Conservation Gaps in Traditional Vegetables Native to Europe and Fennoscandia 
